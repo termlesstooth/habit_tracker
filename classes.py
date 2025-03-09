@@ -13,7 +13,7 @@ class Habit:
 
     def update_log(self):
         """updates the completion log"""
-        self.completion_log[date.today()] = self.completed_today
+        self.completion_log[str(date.today())] = self.completed_today # TODO: Is making the key a string here bad practice? should I do this when I write to JSON
 
     def mark_completed(self):
         """marks habit as completed for the day"""
@@ -64,11 +64,11 @@ class HabitTracker:
             report += f"{habit.name}: Current Streak = {habit.get_streak()}\n"
         return report
 
-dsa = Habit("Data Structures and Algorithms", "Read/Work on exercises from DSA in Python book", "d")
-dsa.mark_completed()
-dsa.update_streak()
-print(f"For your {dsa.name} habit, you have completed it {dsa.get_streak()} day(s) in a row!")
+# dsa = Habit("Data Structures and Algorithms", "Read/Work on exercises from DSA in Python book", "d")
+# dsa.mark_completed()
+# dsa.update_streak()
+# print(f"For your {dsa.name} habit, you have completed it {dsa.get_streak()} day(s) in a row!")
 
-habit_tracker = HabitTracker()
-habit_tracker.add_habit(dsa)
-print(habit_tracker.generate_report())
+# habit_tracker = HabitTracker()
+# habit_tracker.add_habit(dsa)
+# print(habit_tracker.generate_report())
