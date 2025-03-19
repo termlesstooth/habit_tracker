@@ -2,14 +2,17 @@ from datetime import date, timedelta
 
 class Habit:
     """models a habit"""
-    def __init__(self, name: str, description:str, frequency:str):
+    def __init__(self, name: str, description:str, frequency:str, start_date=None, current_streak=0, completed_today=False, completion_log={}):
         self.name = name
         self.description = description
         self.frequency = frequency
-        self.start_date = date.today()
-        self.current_streak = 0
-        self.completed_today = False
-        self.completion_log = {}
+        if not start_date:
+            self.start_date = date.today()
+        else:
+            self.start_date = start_date
+        self.current_streak = current_streak
+        self.completed_today = completed_today
+        self.completion_log = completion_log
 
     def update_log(self):
         """updates the completion log"""
@@ -30,6 +33,24 @@ class Habit:
     def get_streak(self):
         """returns your current streak for that habit"""
         return self.current_streak
+
+    def to_dict(self):
+        data = {
+            "name": self.name,
+            "description": self.description,
+            "frequency": self.frequency,
+            "start_date": str(self.start_date), # ensure it's a string for JSON compatability
+            "current_streak": self.current_streak,
+            "completed_today": self.completed_today,
+            "completion_log": self.completion_log
+        }
+        return data
+    
+    # TODO: may want to convert start_date back toa  date object if it is stored as a string
+    @classmethod
+    def from_dict(cls,data):
+        """Create a habit instance from a dictionary"""
+        return cls(**data)
 
 
 class HabitTracker:
