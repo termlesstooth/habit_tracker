@@ -84,6 +84,13 @@ class HabitTracker:
         for habit in self.habits:
             report += f"{habit.name}: Current Streak = {habit.get_streak()}\n"
         return report
+    
+    def convert_to_list_of_dicts(self):
+        """Convert the list of habit objects to a list of dictionaries."""
+        data = []
+        for habit in self.habits:
+            data.append(habit.to_dict())
+        return data
 
 # dsa = Habit("Data Structures and Algorithms", "Read/Work on exercises from DSA in Python book", "d")
 # dsa.mark_completed()

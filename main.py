@@ -2,60 +2,25 @@ import json
 from classes import Habit, HabitTracker
 from datetime import date
 
-# jack_habit = Habit("Work on Habit Tracker", "Contribute to habit tracker project code", "d",date(2025,3,9),completion_log={'2025-03-09': True})
-# jack_habit.mark_completed()
-# print(jack_habit.completion_log)
 
-# read in habit tracking object
-with open('data/habits_backup.json','r') as f:
+# read in habits
+with open('data/habit_tracker_object_backup.json', 'r') as f:
     data = json.load(f)
 
-jack_habit = Habit.from_dict(data)
 
-# write to json
-with open('data/habits.json', 'w') as f:
-    json.dump(jack_habit.to_dict(), f)
+# store habits in habit tracker object
+# TODO: can probably store the for loop as a method
+all_habits = HabitTracker()
+for habit in data:
+    all_habits.add_habit(Habit.from_dict(habit))
+print(all_habits.generate_report())
 
-# #test of writing a single habit to a JSON
-# data = {
-#     "name": jack_habit.name,
-#     "description": jack_habit.description,
-#     "frequency": jack_habit.frequency,
-#     "start_date": str(jack_habit.start_date),
-#     "current_streak": jack_habit.current_streak,
-#     "completed_today": jack_habit.completed_today,
-#     "completion_log": jack_habit.completion_log 
-# }
-# # write to a JSON file
-# with open('data/habits.json', 'w') as f:
-#     json.dump(data, f) 
+# write a new habit
+python_dsa = Habit("Data Structures and Algorithms", "Solve Data Structures and Algorithms Python Problems","d")
+all_habits.add_habit(python_dsa)
 
-
-
-
-
-# jack_habit.mark_completed()
-
+with open('data/habit_tracker_object.json', 'w') as f:
+    json.dump(all_habits.convert_to_list_of_dicts(), f, indent=4)
 
 # TODO: Need to write the habit tracker object to storage. Is the best way to do this with JSON Data or CSV. Complete that.
 # TODO: Need to make it so that if I miss a day it automatically updates the log
-
-
-# TODO: Probably need to set up a method to do this
-
-# with open('data/habits.json', 'w') as f:
-#     json.dump(jack_habit.to_dict(), f)
-# test of writing a single habit to a JSON
-# data = {
-#     "name": jack_habit.name,
-#     "description": jack_habit.description,
-#     "frequency": jack_habit.frequency,
-#     "start_date": str(jack_habit.start_date),
-#     "current_streak": jack_habit.current_streak,
-#     "completed_today": jack_habit.completed_today,
-#     "completion_log": jack_habit.completion_log 
-# }
-# # write to a JSON file
-# with open('data/habits.json', 'w') as f:
-#     json.dump(data, f) 
-
