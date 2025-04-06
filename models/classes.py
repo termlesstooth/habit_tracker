@@ -40,6 +40,10 @@ class Habit:
     def get_streak(self):
         """returns your current streak for that habit"""
         return self.current_streak
+    
+    def display_log(self):
+        """Displays the completion log for that habit."""
+        return self.completion_log
 
     def to_dict(self):
         data = {
@@ -88,7 +92,7 @@ class HabitTracker:
         """Generates a report summarizing all tracked habits."""
         report = "Habit Report:\n"
         for habit in self.habits:
-            report += f"{habit.name}: Current Streak = {habit.get_streak()}\n"
+            report += f"{habit.name}: Log = {habit.display_log()}\n"
         return report
     
     def convert_to_list_of_dicts(self):
