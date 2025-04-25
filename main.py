@@ -17,7 +17,7 @@ all_habits = HabitTracker()
 for habit in data:
     all_habits.add_habit(Habit.from_dict(habit))
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description="Interact with your habit tracker!")
 parser.add_argument("-H", "--habits", nargs='*', help="The habits you want to mark as completed for the day")
 parser.add_argument("-a", "--add", help = "A habit you want to add to the habit tracker")
 args = parser.parse_args()
