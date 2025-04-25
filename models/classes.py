@@ -1,8 +1,9 @@
 from datetime import date, timedelta
 
+#TODO: Add in a time metric so I can track how much time I spent each day on things 
 class Habit:
     """models a habit"""
-    def __init__(self, name: str, description:str, frequency:str, start_date=None, current_streak=0, completed_today=False, completion_log={}):
+    def __init__(self, name: str, description = "", frequency = "d", start_date=None, current_streak=0, completed_today=False, completion_log={}):
         self.name = name
         self.description = description
         self.frequency = frequency
