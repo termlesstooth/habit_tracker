@@ -1,4 +1,7 @@
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 #TODO: Add in a time metric so I can track how much time I spent each day on things 
 class Habit:
@@ -17,11 +20,13 @@ class Habit:
 
     def update_log(self):
         """updates the completion log"""
-        self.completion_log[str(date.today())] = self.completed_today # TODO: Is making the key a string here bad practice? should I do this when I write to JSON
+        self.completion_log[str(date.today())] = self.completed_today # TODO: Is making the key a string here bad practice? should I do this when I write to JSON. Chat GPT says date objects arent json serializable. Investigate
 
     def mark_completed(self):
-        """marks habit as completed for the day"""
+        """Marks habit as completed for the day."""
         self.completed_today = True
+        logger.info(f"Marked [{self.name}] as completed")
+        print(f"\n🎉 Congrats on completing {self.name} for the day!")
         self.update_log()
         self.update_streak()
 
@@ -80,6 +85,7 @@ class HabitTracker:
 
     def mark_habit_completed(self, habit_name):
         """Marks a specific habit as completed for today"""
+
         for habit in self.habits:
             if habit.name == habit_name:
                 habit.mark_completed()
@@ -106,3 +112,33 @@ class HabitTracker:
     def update_streaks(self):
         for habit in self.habits:
             habit.update_streak()
+
+    def generate_daily_habit_to_do(self):
+        """Generates a user's habit to-do list for the day."""
+        to_do_list = []
+        completed_list = []
+        for habit in self.habits:
+            last_logged_str = next(reversed(habit.completion_log))
+            last_logged_date = datetime.strptime(last_logged_str, "%Y-%m-%d").date()
+            if last_logged_date != date.today(): # check if a log for that habit exists for today
+                to_do_list.append(habit.name)
+                logging.info("Added a habit to the to-do list")
+            else:
+                completed_list.append(habit.name)
+                logging.info("Added a habit to the completed list")
+
+
+        formatted_date = date.today().strftime("%A the %d of %B, %Y")
+        # TODO: Add a function to reference current time and write the appropriate greeting. 
+        print(f"\n🌞 Good morning, Jack! It's {formatted_date}.")
+        if to_do_list:
+            print("📝 Here's your habit hit list for today:")
+            for habit in to_do_list:
+                print(f"\t⭕ {habit}")
+        if completed_list:
+            print("💪 You have already completed:")
+            for habit in completed_list:
+                print(f"\t✅ {habit}")
+        else:
+            print("🎉 All habits complete - you're crushing it today!")
+                
