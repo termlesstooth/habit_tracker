@@ -8,22 +8,30 @@ logging.basicConfig(
     filename="log.log",
     filemode="w",
     format="%(asctime)s - %(levelname)s - %(funcName)s - %(message)s"
-    )
+)
+
+
+# get a logger object
+logger = logging.getLogger(__name__)  
 
 # read in habits
+logger.info("Reading habit_tracker_object.json file")
 try:
     with open('data/habit_tracker_object.json', 'r') as f:
         data = json.load(f)
+    logger.info("Succsessfully read habit_tracker_object.json")
 except FileNotFoundError:
-    print("File not found") 
-except  Exception as e:
-    print(f"Unexpected error: {e}")
+    logger.warning("File not found")
+except  Exception:
+    logger.exception("Unexpected error while reading habit_tracker_object.json")
 
 # store habits in habit tracker object
+logger.info("Creating HabitTracker object")
 all_habits = HabitTracker()
 # TODO: can probably store the for loop as a method
 for habit in data:
     all_habits.add_habit(Habit.from_dict(habit))
+logger.info("Added habits to HabitTracker object")
 
 parser = argparse.ArgumentParser(description="Interact with your habit tracker!")
 parser.add_argument("-mc", "--habits", nargs='*', help="The habits you want to mark as completed for the day")
@@ -32,11 +40,13 @@ args = parser.parse_args()
 
 # mark habits that user inputs as completed for the day
 if args.habits:
+    logger.info("Marking habit as complete")
     try:
         for habit in args.habits:
             all_habits.mark_habit_completed(habit)
-    except Exception as e:
-        print(f"Unexpected error: {e}")
+        logger.info("Marked habits as completed")
+    except Exception:
+        logger.exception(f"Unexpected error occured while marking a habit as complete")
 
 if args.add:
     try:

@@ -89,6 +89,9 @@ class HabitTracker:
         for habit in self.habits:
             if habit.name == habit_name:
                 habit.mark_completed()
+            else: 
+                # TODO: figure out how to relay this message properly
+                print(f"That habit doesn't exist!")
     
     def daily_reset(self):
         """Resets daily flags for all habits at the start of a new day."""
@@ -122,10 +125,10 @@ class HabitTracker:
             last_logged_date = datetime.strptime(last_logged_str, "%Y-%m-%d").date()
             if last_logged_date != date.today(): # check if a log for that habit exists for today
                 to_do_list.append(habit.name)
-                logging.info("Added a habit to the to-do list")
+                logger.info("Added a habit to the to-do list")
             else:
                 completed_list.append(habit.name)
-                logging.info("Added a habit to the completed list")
+                logger.info("Added a habit to the completed list")
 
 
         formatted_date = date.today().strftime("%A the %d of %B, %Y")
@@ -135,7 +138,7 @@ class HabitTracker:
             print("📝 Here's your habit hit list for today:")
             for habit in to_do_list:
                 print(f"\t⭕ {habit}")
-        if completed_list:
+        elif completed_list:
             print("💪 You have already completed:")
             for habit in completed_list:
                 print(f"\t✅ {habit}")
